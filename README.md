@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Francisca Ubah Ghostwriting Portfolio
 
-## Getting Started
+A professional portfolio website for Ifeyinwa Francisca Ubah with **Sanity CMS integration** for easy content management.
 
-First, run the development server:
+## 🎯 Overview
 
+This website showcases Francisca's ghostwriting services with **8 pages** and a **visual CMS dashboard** so she can manage all content without coding.
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4 (Navy blue + Gold theme)
+- **Animations**: Framer Motion
+- **CMS**: Sanity.io (Content Management)
+- **Forms**: Formspree
+- **Fonts**: Playfair Display + Inter
+
+## ✨ Features
+
+✅ **8 Pages**: Home, Portfolio, Services, Testimonials, About, Contact, Blog, FAQ
+✅ **CMS Dashboard**: Francisca can edit everything at `/studio`
+✅ **Image Management**: Upload and manage images through Sanity
+✅ **No Coding Required**: All content editable through visual interface
+✅ **Responsive Design**: Works perfectly on all devices
+✅ **SEO Optimized**: Sitemap, metadata, Open Graph tags
+✅ **Contact Form**: Integrated with Formspree
+
+---
+
+## 🚀 Quick Start
+
+1. **Install dependencies:**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Set up environment variables:**
+```bash
+cp .env.local.example .env.local
+# Edit .env.local with your Sanity Project ID and Formspree ID
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Run development server:**
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Access the CMS at:** http://localhost:3000/studio
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📖 Documentation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **📘 For Francisca (Content Editor)**: See [SANITY_SETUP.md](./SANITY_SETUP.md) - Complete guide to managing content
+- **👨‍💻 For Developers**: See inline code comments and this README
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🎯 Quick Setup Checklist
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Create Sanity Project
+- Go to https://www.sanity.io/manage
+- Create new project: "francisca-ghostwriting"
+- Copy Project ID
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Create Formspree Form
+- Go to https://formspree.io
+- Create new form
+- Copy Form ID
+
+### 3. Configure Environment
+Edit `.env.local`:
+```
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_FORMSPREE_ID=your_formspree_id
+```
+
+### 4. Start Adding Content
+- Run: `npm run dev`
+- Visit: http://localhost:3000/studio
+- Log in with your Sanity account
+- Start adding portfolio items, services, testimonials, etc.
+
+---
+
+## 🚢 Deployment (Vercel Recommended)
+
+1. Push code to GitHub
+2. Go to https://vercel.com
+3. Import repository
+4. Add environment variables
+5. Deploy!
+
+Your site will be live with automatic deployments on every push.
+
+---
+
+## 📞 Support
+
+- **CMS Questions**: See [SANITY_SETUP.md](./SANITY_SETUP.md)
+- **Technical Issues**: Contact your developer
+- **Sanity Help**: https://www.sanity.io/docs
+
+---
+
+**Built for Francisca Ubah** 🎨
