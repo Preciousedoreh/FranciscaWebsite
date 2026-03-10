@@ -2,14 +2,18 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { TestimonialCard } from '@/components/ui/TestimonialCard';
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
 import { CTASection } from '@/components/sections/CTASection';
-import { testimonials } from '@/lib/data/testimonials';
+import { testimonials as staticTestimonials } from '@/lib/data/testimonials';
+import { getTestimonials } from '@/lib/api';
 
 export const metadata = {
   title: 'Testimonials',
   description: 'Read what clients say about working with Ifeyinwa Francisca Ubah for ghostwriting services. Client success stories and reviews.',
 };
 
-export default function TestimonialsPage() {
+export default async function TestimonialsPage() {
+  const apiTestimonials = await getTestimonials();
+  const testimonials = apiTestimonials && apiTestimonials.length > 0 ? apiTestimonials : staticTestimonials;
+
   return (
     <>
       <div className="py-20 px-4">
@@ -20,8 +24,8 @@ export default function TestimonialsPage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            {testimonials.map((testimonial, index) => (
-              <AnimateOnScroll key={testimonial.id} delay={index * 0.1}>
+            {testimonials.map((testimonial: any, index: number) => (
+              <AnimateOnScroll key={testimonial.id || testimonial._id} delay={index * 0.1}>
                 <TestimonialCard testimonial={testimonial} />
               </AnimateOnScroll>
             ))}

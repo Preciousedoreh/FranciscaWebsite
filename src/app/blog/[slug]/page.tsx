@@ -1,18 +1,26 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { blogPosts } from '@/lib/data/blog-posts';
+import { blogPosts as staticPosts } from '@/lib/data/blog-posts';
 import { BlogCard } from '@/components/ui/BlogCard';
 import { CTASection } from '@/components/sections/CTASection';
+import { getBlogPosts, getBlogPost } from '@/lib/api';
+
+async function getAllPosts() {
+  const apiPosts = await getBlogPosts();
+  return apiPosts && apiPosts.length > 0 ? apiPosts : staticPosts;
+}
 
 export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
+  const posts = await getAllPosts();
+  return posts.map((post: any) => ({
     slug: post.slug,
   }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const apiPost = await getBlogPost(slug);
+  const post = apiPost || staticPosts.find((p) => p.slug === slug);
 
   if (!post) {
     return {
@@ -28,14 +36,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const allPosts = await getAllPosts();
+  const apiPost = await getBlogPost(slug);
+  const post = apiPost || allPosts.find((p: any) => p.slug === slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = blogPosts
-    .filter((p) => p.slug !== slug && (p.category === post.category || p.featured))
+  const relatedPosts = allPosts
+    .filter((p: any) => p.slug !== slug && (p.category === post.category || p.featured))
     .slice(0, 3);
 
   return (
@@ -76,7 +86,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="mt-8 pt-8 border-t border-medium-gray">
             <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: string) => (
                 <span
                   key={tag}
                   className="px-3 py-1 bg-navy-50 text-navy-600 rounded-full text-sm"
@@ -96,7 +106,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               Related Posts
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedPosts.map((relatedPost) => (
+              {relatedPosts.map((relatedPost: any) => (
                 <BlogCard key={relatedPost.slug} post={relatedPost} />
               ))}
             </div>
