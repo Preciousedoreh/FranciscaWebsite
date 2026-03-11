@@ -41,10 +41,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const data = await authApi.login(email, password);
+    const userData = { id: data._id, email: data.email, name: data.username || 'Admin' };
     localStorage.setItem('admin_token', data.token);
-    localStorage.setItem('admin_user', JSON.stringify(data.user || { email, name: email }));
+    localStorage.setItem('admin_user', JSON.stringify(userData));
     setToken(data.token);
-    setUser(data.user || { id: '', email, name: email });
+    setUser(userData);
     router.push('/admin');
   };
 
