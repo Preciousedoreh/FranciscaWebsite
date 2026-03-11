@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
 import { CTASection } from '@/components/sections/CTASection';
@@ -14,13 +15,14 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
             <AnimateOnScroll direction="left">
-              <div className="bg-gradient-to-br from-navy-100 to-navy-200 rounded-2xl aspect-[3/4] flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-48 h-48 mx-auto bg-white rounded-full flex items-center justify-center mb-4">
-                    <span className="text-6xl font-heading font-bold text-navy-600">IFU</span>
-                  </div>
-                  <p className="text-navy-600 font-medium">Professional Photo Coming Soon</p>
-                </div>
+              <div className="rounded-2xl overflow-hidden aspect-[3/4] relative">
+                <Image
+                  src="/images/francisca.jpeg"
+                  alt="Ifeyinwa Francisca Ubah"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
             </AnimateOnScroll>
 
