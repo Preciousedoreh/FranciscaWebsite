@@ -11,12 +11,12 @@ import { useAuth } from '@/lib/admin/auth-context';
 import toast from 'react-hot-toast';
 
 const categories = [
-  { value: 'ghostwriting', label: 'Ghostwriting' },
-  { value: 'editing', label: 'Editing' },
-  { value: 'copywriting', label: 'Copywriting' },
-  { value: 'content-strategy', label: 'Content Strategy' },
-  { value: 'book-writing', label: 'Book Writing' },
-  { value: 'blog-writing', label: 'Blog Writing' },
+  { value: 'Business', label: 'Business' },
+  { value: 'Personal Development', label: 'Personal Development' },
+  { value: 'Memoirs', label: 'Memoirs' },
+  { value: 'Blog Posts', label: 'Blog Posts' },
+  { value: 'Articles', label: 'Articles' },
+  { value: 'Social Media', label: 'Social Media' },
 ];
 
 export default function NewPortfolioPage() {
