@@ -10,6 +10,7 @@ export function TestimonialCard({ testimonial, variant = 'default' }: Testimonia
   const textColor = variant === 'featured' ? 'text-charcoal' : 'text-navy-800';
   const clientImage = testimonial.clientPhoto || testimonial.clientImage;
   const hasRoleLine = testimonial.clientTitle || testimonial.clientCompany;
+  const rating = testimonial.rating ?? null;
 
   return (
     <div className={`${bgColor} rounded-lg p-6 border-l-4 border-gold-400 shadow-md`}>
@@ -43,12 +44,12 @@ export function TestimonialCard({ testimonial, variant = 'default' }: Testimonia
           </div>
         </div>
 
-        {testimonial.rating && (
+        {typeof rating === 'number' && rating >= 0 && (
           <div className="flex gap-1 mt-2">
-            {[...Array(testimonial.rating)].map((_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <svg
                 key={i}
-                className="w-5 h-5 text-gold-400"
+                className={`h-5 w-5 ${i < rating ? 'text-gold-400' : 'text-gray-300'}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

@@ -8,6 +8,7 @@ const initialForm = {
   name: '',
   title: '',
   company: '',
+  rating: '5',
   quote: '',
 };
 
@@ -67,6 +68,7 @@ export function TestimonialSubmissionForm() {
     payload.append('name', form.name.trim());
     payload.append('title', form.title.trim());
     payload.append('company', form.company.trim());
+    payload.append('rating', form.rating);
     payload.append('quote', form.quote.trim());
 
     if (photo) {
@@ -178,6 +180,25 @@ export function TestimonialSubmissionForm() {
               Selected: {photo.name}
             </p>
           )}
+        </div>
+
+        <div>
+          <label htmlFor="testimonial-rating" className="mb-2 block text-sm font-medium text-charcoal">
+            Rating
+          </label>
+          <select
+            id="testimonial-rating"
+            value={form.rating}
+            onChange={(event) => update('rating', event.target.value)}
+            className="w-full rounded-xl border border-medium-gray bg-white px-4 py-3 outline-none transition focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20"
+          >
+            <option value="5">5 stars</option>
+            <option value="4">4 stars</option>
+            <option value="3">3 stars</option>
+            <option value="2">2 stars</option>
+            <option value="1">1 star</option>
+            <option value="0">0 stars</option>
+          </select>
         </div>
 
         <div className="md:col-span-2">

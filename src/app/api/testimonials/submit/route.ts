@@ -16,12 +16,20 @@ export async function POST(request: Request) {
     const name = String(formData.get('name') || '').trim();
     const title = String(formData.get('title') || '').trim();
     const company = String(formData.get('company') || '').trim();
+    const rating = Number(formData.get('rating'));
     const quote = String(formData.get('quote') || '').trim();
     const photo = formData.get('photo');
 
     if (!name || !quote) {
       return NextResponse.json(
         { message: 'Name and testimonial are required.' },
+        { status: 400 }
+      );
+    }
+
+    if (!Number.isInteger(rating) || rating < 0 || rating > 5) {
+      return NextResponse.json(
+        { message: 'Rating must be between 0 and 5.' },
         { status: 400 }
       );
     }
@@ -51,6 +59,7 @@ export async function POST(request: Request) {
     payload.append('clientName', name);
     payload.append('clientTitle', title);
     payload.append('clientCompany', company);
+    payload.append('rating', String(rating));
     payload.append('quote', quote);
 
     if (photo instanceof File && photo.size > 0) {

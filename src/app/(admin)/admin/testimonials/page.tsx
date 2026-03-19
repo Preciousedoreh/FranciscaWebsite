@@ -148,7 +148,7 @@ export default function TestimonialsListPage() {
                                 type="button"
                                 onClick={() => updateStatus(item, 'published')}
                                 disabled={isActing}
-                                className="rounded-full bg-green-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                className="rounded-full bg-green-600 px-3 py-1 text-xs font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 Accept
                               </button>
@@ -156,7 +156,7 @@ export default function TestimonialsListPage() {
                                 type="button"
                                 onClick={() => updateStatus(item, 'declined')}
                                 disabled={isActing}
-                                className="rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-700 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
+                                className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
                               >
                                 Decline
                               </button>
