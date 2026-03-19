@@ -5,6 +5,7 @@ import { CTASection } from '@/components/sections/CTASection';
 import { TestimonialSubmissionForm } from '@/components/forms/TestimonialSubmissionForm';
 import { getTestimonials } from '@/lib/api';
 import { Testimonial } from '@/lib/types';
+import { isPublishedTestimonial } from '@/lib/testimonials/status';
 
 export const metadata = {
   title: 'Testimonials',
@@ -14,7 +15,7 @@ export const metadata = {
 export default async function TestimonialsPage() {
   const apiTestimonials = await getTestimonials();
   const testimonials: Testimonial[] = (apiTestimonials || []).filter(
-    (testimonial: Testimonial) => testimonial.published !== false
+    (testimonial: Testimonial) => isPublishedTestimonial(testimonial)
   );
 
   return (

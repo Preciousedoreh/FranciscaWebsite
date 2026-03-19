@@ -34,6 +34,7 @@ export interface Testimonial {
   rating: number;
   featured: boolean;
   published: boolean;
+  status?: 'pending' | 'published' | 'declined';
   projectType?: string;
   createdAt: string;
   updatedAt: string;

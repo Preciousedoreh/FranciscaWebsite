@@ -3,11 +3,12 @@ import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
 import { Button } from '@/components/ui/Button';
 import { getTestimonials } from '@/lib/api';
 import { Testimonial } from '@/lib/types';
+import { isPublishedTestimonial } from '@/lib/testimonials/status';
 
 export async function TestimonialsSnippet() {
   const apiTestimonials = await getTestimonials(true);
   const featuredTestimonials: Testimonial[] = (apiTestimonials || [])
-    .filter((testimonial: Testimonial) => testimonial.published !== false)
+    .filter((testimonial: Testimonial) => isPublishedTestimonial(testimonial))
     .slice(0, 3);
 
   return (

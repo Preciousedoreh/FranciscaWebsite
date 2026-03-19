@@ -5,6 +5,8 @@ import { AdminHeader } from '@/components/admin/AdminHeader';
 import { testimonialsApi } from '@/lib/admin/api';
 import { Testimonial } from '@/lib/admin/types';
 import { useAuth } from '@/lib/admin/auth-context';
+import { getTestimonialStatus } from '@/lib/testimonials/status';
+import { FiTrash2 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 export default function TestimonialsListPage() {
@@ -29,17 +31,37 @@ export default function TestimonialsListPage() {
     }
   }, [isLoading]);
 
-  const updateStatus = async (item: Testimonial, published: boolean) => {
+  const updateStatus = async (
+    item: Testimonial,
+    status: 'published' | 'declined'
+  ) => {
     setActingId(item._id);
 
     try {
-      const updated = await testimonialsApi.update(item._id, { published });
+      const updated = await testimonialsApi.update(item._id, {
+        status,
+        published: status === 'published',
+      });
       setItems((current) =>
         current.map((existing) => (existing._id === item._id ? updated : existing))
       );
-      toast.success(published ? 'Testimonial accepted' : 'Testimonial declined');
+      toast.success(status === 'published' ? 'Testimonial accepted' : 'Testimonial declined');
     } catch {
       toast.error('Failed to update testimonial');
+    } finally {
+      setActingId(null);
+    }
+  };
+
+  const handleDelete = async (item: Testimonial) => {
+    setActingId(item._id);
+
+    try {
+      await testimonialsApi.delete(item._id);
+      setItems((current) => current.filter((existing) => existing._id !== item._id));
+      toast.success('Testimonial deleted');
+    } catch {
+      toast.error('Failed to delete testimonial');
     } finally {
       setActingId(null);
     }
@@ -83,6 +105,9 @@ export default function TestimonialsListPage() {
               <tbody>
                 {items.map((item) => {
                   const isActing = actingId === item._id;
+                  const status = getTestimonialStatus(item);
+                  const isPending = status === 'pending';
+                  const isPublished = status === 'published';
 
                   return (
                     <tr key={item._id} className="border-b border-gray-100 align-top hover:bg-gray-50">
@@ -101,40 +126,52 @@ export default function TestimonialsListPage() {
                       <td className="px-4 py-4 text-sm text-gray-700">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
-                            item.published
+                            isPublished
                               ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-600'
+                              : status === 'declined'
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-amber-100 text-amber-700'
                           }`}
                         >
-                          {item.published ? 'Published' : 'Unpublished'}
+                          {status === 'published'
+                            ? 'Published'
+                            : status === 'declined'
+                              ? 'Declined'
+                              : 'Pending'}
                         </span>
                       </td>
                       <td className="px-4 py-4">
                         <div className="flex justify-end gap-2 pt-1">
-                          <button
-                            type="button"
-                            onClick={() => updateStatus(item, true)}
-                            disabled={isActing || item.published}
-                            className={`rounded-full px-4 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
-                              item.published
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-green-600 text-white hover:bg-green-700'
-                            }`}
-                          >
-                            Accept
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => updateStatus(item, false)}
-                            disabled={isActing || !item.published}
-                            className={`rounded-full px-4 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
-                              item.published
-                                ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
-                                : 'bg-gray-100 text-gray-500'
-                            }`}
-                          >
-                            Decline
-                          </button>
+                          {isPending ? (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => updateStatus(item, 'published')}
+                                disabled={isActing}
+                                className="rounded-full bg-green-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                              >
+                                Accept
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => updateStatus(item, 'declined')}
+                                disabled={isActing}
+                                className="rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-700 transition hover:bg-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
+                              >
+                                Decline
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(item)}
+                              disabled={isActing}
+                              className="rounded-full p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                              aria-label={`Delete testimonial from ${item.clientName}`}
+                            >
+                              <FiTrash2 size={16} />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
