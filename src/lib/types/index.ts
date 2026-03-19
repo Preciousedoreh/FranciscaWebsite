@@ -34,15 +34,18 @@ export interface ServiceItem {
 
 // Testimonials
 export interface Testimonial {
-  id: string;
+  id?: string;
+  _id?: string;
   quote: string;
   clientName: string;
   clientTitle?: string;
   clientCompany?: string;
   clientPhoto?: string;
+  clientImage?: string;
   rating?: number;
   featured: boolean;
-  projectType: string;
+  published?: boolean;
+  projectType?: string;
 }
 
 // FAQ

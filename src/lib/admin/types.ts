@@ -28,11 +28,13 @@ export interface Testimonial {
   _id: string;
   clientName: string;
   clientTitle: string;
+  clientCompany?: string;
   clientImage: string;
   quote: string;
   rating: number;
   featured: boolean;
   published: boolean;
+  projectType?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -25,7 +25,7 @@ export default function EditTestimonialPage() {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
-    clientName: '', clientTitle: '', clientImage: '', quote: '',
+    clientName: '', clientTitle: '', clientCompany: '', clientImage: '', quote: '',
     rating: 5, featured: false, published: false,
   });
 
@@ -36,6 +36,7 @@ export default function EditTestimonialPage() {
     testimonialsApi.getOne(id).then((data) => {
       setForm({
         clientName: data.clientName || '', clientTitle: data.clientTitle || '',
+        clientCompany: data.clientCompany || '',
         clientImage: data.clientImage || '', quote: data.quote || '',
         rating: data.rating || 5, featured: data.featured || false, published: data.published || false,
       });
@@ -65,6 +66,7 @@ export default function EditTestimonialPage() {
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-5">
           <FormField label="Client Name" value={form.clientName} onChange={(e) => update('clientName', (e.target as HTMLInputElement).value)} required />
           <FormField label="Client Title" value={form.clientTitle} onChange={(e) => update('clientTitle', (e.target as HTMLInputElement).value)} />
+          <FormField label="Client Company" value={form.clientCompany} onChange={(e) => update('clientCompany', (e.target as HTMLInputElement).value)} />
           <ImageUpload label="Client Image" value={form.clientImage} onChange={(url) => update('clientImage', url)} />
           <FormField label="Quote" type="textarea" value={form.quote} onChange={(e) => update('quote', (e.target as HTMLTextAreaElement).value)} required />
           <FormField label="Rating" type="select" options={ratingOptions} value={String(form.rating)} onChange={(e) => update('rating', Number((e.target as HTMLSelectElement).value))} />

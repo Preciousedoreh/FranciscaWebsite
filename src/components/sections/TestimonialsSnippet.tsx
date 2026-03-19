@@ -1,13 +1,14 @@
-'use client';
-
 import { TestimonialCard } from '@/components/ui/TestimonialCard';
 import { AnimateOnScroll } from '@/components/ui/AnimateOnScroll';
-import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
-import { testimonials } from '@/lib/data/testimonials';
+import { getTestimonials } from '@/lib/api';
+import { Testimonial } from '@/lib/types';
 
-export function TestimonialsSnippet() {
-  const featuredTestimonials = testimonials.filter((t) => t.featured).slice(0, 3);
+export async function TestimonialsSnippet() {
+  const apiTestimonials = await getTestimonials(true);
+  const featuredTestimonials: Testimonial[] = (apiTestimonials || [])
+    .filter((testimonial: Testimonial) => testimonial.published !== false)
+    .slice(0, 3);
 
   return (
     <section className="py-20 bg-navy-600">
@@ -22,17 +23,29 @@ export function TestimonialsSnippet() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {featuredTestimonials.map((testimonial, index) => (
-            <AnimateOnScroll key={testimonial.id} delay={index * 0.15} direction="up">
-              <TestimonialCard testimonial={testimonial} variant="featured" />
-            </AnimateOnScroll>
-          ))}
-        </div>
+        {featuredTestimonials.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {featuredTestimonials.map((testimonial, index: number) => (
+              <AnimateOnScroll
+                key={testimonial.id || testimonial._id}
+                delay={index * 0.15}
+                direction="up"
+              >
+                <TestimonialCard testimonial={testimonial} variant="featured" />
+              </AnimateOnScroll>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-12 rounded-3xl border border-white/15 bg-white/10 px-8 py-10 text-center text-white">
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-navy-100">
+              Approved testimonials will appear here. If you have worked with Francisca, you can submit yours now.
+            </p>
+          </div>
+        )}
 
         <div className="text-center">
-          <Button variant="primary" size="lg" href="/testimonials">
-            View All Testimonials
+          <Button variant="primary" size="lg" href="/testimonials#share-your-experience">
+            Share Your Experience
           </Button>
         </div>
       </div>

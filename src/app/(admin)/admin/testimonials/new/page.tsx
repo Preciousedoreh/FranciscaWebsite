@@ -23,7 +23,7 @@ export default function NewTestimonialPage() {
   const { isLoading } = useAuth();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    clientName: '', clientTitle: '', clientImage: '', quote: '',
+    clientName: '', clientTitle: '', clientCompany: '', clientImage: '', quote: '',
     rating: 5, featured: false, published: false,
   });
 
@@ -52,6 +52,7 @@ export default function NewTestimonialPage() {
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-6 space-y-5">
           <FormField label="Client Name" value={form.clientName} onChange={(e) => update('clientName', (e.target as HTMLInputElement).value)} required />
           <FormField label="Client Title" value={form.clientTitle} onChange={(e) => update('clientTitle', (e.target as HTMLInputElement).value)} placeholder="e.g. CEO, Author, etc." />
+          <FormField label="Client Company" value={form.clientCompany} onChange={(e) => update('clientCompany', (e.target as HTMLInputElement).value)} placeholder="Optional company or organization" />
           <ImageUpload label="Client Image" value={form.clientImage} onChange={(url) => update('clientImage', url)} />
           <FormField label="Quote" type="textarea" value={form.quote} onChange={(e) => update('quote', (e.target as HTMLTextAreaElement).value)} required />
           <FormField label="Rating" type="select" options={ratingOptions} value={String(form.rating)} onChange={(e) => update('rating', Number((e.target as HTMLSelectElement).value))} />

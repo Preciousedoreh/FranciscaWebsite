@@ -8,6 +8,8 @@ interface TestimonialCardProps {
 export function TestimonialCard({ testimonial, variant = 'default' }: TestimonialCardProps) {
   const bgColor = variant === 'featured' ? 'bg-white' : 'bg-navy-50';
   const textColor = variant === 'featured' ? 'text-charcoal' : 'text-navy-800';
+  const clientImage = testimonial.clientPhoto || testimonial.clientImage;
+  const hasRoleLine = testimonial.clientTitle || testimonial.clientCompany;
 
   return (
     <div className={`${bgColor} rounded-lg p-6 border-l-4 border-gold-400 shadow-md`}>
@@ -22,13 +24,24 @@ export function TestimonialCard({ testimonial, variant = 'default' }: Testimonia
       </p>
 
       <div className="border-t border-medium-gray pt-4">
-        <p className="font-semibold text-navy-600">{testimonial.clientName}</p>
-        {testimonial.clientTitle && (
-          <p className="text-sm text-navy-500">
-            {testimonial.clientTitle}
-            {testimonial.clientCompany && `, ${testimonial.clientCompany}`}
-          </p>
-        )}
+        <div className="flex items-start gap-4">
+          {clientImage && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={clientImage}
+              alt={testimonial.clientName}
+              className="h-14 w-14 rounded-full object-cover border border-medium-gray"
+            />
+          )}
+          <div>
+            <p className="font-semibold text-navy-600">{testimonial.clientName}</p>
+            {hasRoleLine && (
+              <p className="text-sm text-navy-500">
+                {[testimonial.clientTitle, testimonial.clientCompany].filter(Boolean).join(', ')}
+              </p>
+            )}
+          </div>
+        </div>
 
         {testimonial.rating && (
           <div className="flex gap-1 mt-2">
@@ -45,9 +58,11 @@ export function TestimonialCard({ testimonial, variant = 'default' }: Testimonia
           </div>
         )}
 
-        <p className="text-xs text-navy-400 mt-2 uppercase tracking-wide">
-          {testimonial.projectType}
-        </p>
+        {testimonial.projectType && (
+          <p className="text-xs text-navy-400 mt-2 uppercase tracking-wide">
+            {testimonial.projectType}
+          </p>
+        )}
       </div>
     </div>
   );

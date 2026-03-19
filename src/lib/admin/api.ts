@@ -62,8 +62,23 @@ function createCrudApi<T>(basePath: string) {
 
 export const portfolioApi = createCrudApi<import('./types').Portfolio>('/portfolio');
 export const servicesApi = createCrudApi<import('./types').Service>('/services');
-export const testimonialsApi = createCrudApi<import('./types').Testimonial>('/testimonials');
 export const faqsApi = createCrudApi<import('./types').FAQ>('/faqs');
+
+export const testimonialsApi = {
+  getAll: () => authFetch('/testimonials/admin/all') as Promise<import('./types').Testimonial[]>,
+  getOne: (id: string) => authFetch(`/testimonials/admin/${id}`) as Promise<import('./types').Testimonial>,
+  create: (data: Partial<import('./types').Testimonial>) => authFetch('/testimonials', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }) as Promise<import('./types').Testimonial>,
+  update: (id: string, data: Partial<import('./types').Testimonial>) => authFetch(`/testimonials/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }) as Promise<import('./types').Testimonial>,
+  delete: (id: string) => authFetch(`/testimonials/${id}`, {
+    method: 'DELETE',
+  }),
+};
 
 export const blogApi = {
   ...createCrudApi<import('./types').BlogPost>('/blog'),
