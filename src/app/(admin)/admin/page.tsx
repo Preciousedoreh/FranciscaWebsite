@@ -70,7 +70,6 @@ export default function AdminDashboard() {
     { label: 'New Portfolio Item', href: '/admin/portfolio/new' },
     { label: 'New Blog Post', href: '/admin/blog/new' },
     { label: 'New Service', href: '/admin/services/new' },
-    { label: 'New Testimonial', href: '/admin/testimonials/new' },
     { label: 'New FAQ', href: '/admin/faqs/new' },
   ];
 
