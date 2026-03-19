@@ -6,8 +6,8 @@ import { Testimonial } from '@/lib/types';
 import { isPublishedTestimonial } from '@/lib/testimonials/status';
 
 export async function TestimonialsSnippet() {
-  const apiTestimonials = await getTestimonials(true);
-  const featuredTestimonials: Testimonial[] = (apiTestimonials || [])
+  const apiTestimonials = await getTestimonials();
+  const approvedTestimonials: Testimonial[] = (apiTestimonials || [])
     .filter((testimonial: Testimonial) => isPublishedTestimonial(testimonial))
     .slice(0, 3);
 
@@ -24,9 +24,9 @@ export async function TestimonialsSnippet() {
           </p>
         </div>
 
-        {featuredTestimonials.length > 0 ? (
+        {approvedTestimonials.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {featuredTestimonials.map((testimonial, index: number) => (
+            {approvedTestimonials.map((testimonial, index: number) => (
               <AnimateOnScroll
                 key={testimonial.id || testimonial._id}
                 delay={index * 0.15}
