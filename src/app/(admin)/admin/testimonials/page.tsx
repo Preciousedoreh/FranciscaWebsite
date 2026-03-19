@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { AdminHeader } from '@/components/admin/AdminHeader';
-import { DeleteConfirmModal } from '@/components/admin/DeleteConfirmModal';
 import { testimonialsApi } from '@/lib/admin/api';
 import { Testimonial } from '@/lib/admin/types';
 import { useAuth } from '@/lib/admin/auth-context';
@@ -12,7 +11,6 @@ export default function TestimonialsListPage() {
   const { isLoading } = useAuth();
   const [items, setItems] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [actingId, setActingId] = useState<string | null>(null);
 
   const fetchItems = async () => {
@@ -44,23 +42,6 @@ export default function TestimonialsListPage() {
       toast.error('Failed to update testimonial');
     } finally {
       setActingId(null);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!deleteId) return;
-
-    setActingId(deleteId);
-
-    try {
-      await testimonialsApi.delete(deleteId);
-      setItems((current) => current.filter((item) => item._id !== deleteId));
-      toast.success('Testimonial deleted');
-    } catch {
-      toast.error('Failed to delete testimonial');
-    } finally {
-      setActingId(null);
-      setDeleteId(null);
     }
   };
 
@@ -119,7 +100,7 @@ export default function TestimonialsListPage() {
                       <td className="px-4 py-4 text-sm text-gray-700">{item.rating}/5</td>
                       <td className="px-4 py-4 text-sm text-gray-700">
                         <span
-                          className={`inline-flex rounded-full px-2 py-1 text-xs ${
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${
                             item.published
                               ? 'bg-green-100 text-green-700'
                               : 'bg-gray-100 text-gray-600'
@@ -129,33 +110,30 @@ export default function TestimonialsListPage() {
                         </span>
                       </td>
                       <td className="px-4 py-4">
-                        <div className="flex justify-end gap-2">
-                          {item.published ? (
-                            <button
-                              type="button"
-                              onClick={() => updateStatus(item, false)}
-                              disabled={isActing}
-                              className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                              Decline
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => updateStatus(item, true)}
-                              disabled={isActing}
-                              className="rounded-lg bg-green-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                              Accept
-                            </button>
-                          )}
+                        <div className="flex justify-end gap-2 pt-1">
                           <button
                             type="button"
-                            onClick={() => setDeleteId(item._id)}
-                            disabled={isActing}
-                            className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                            onClick={() => updateStatus(item, true)}
+                            disabled={isActing || item.published}
+                            className={`rounded-full px-4 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                              item.published
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-green-600 text-white hover:bg-green-700'
+                            }`}
                           >
-                            Delete
+                            Accept
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateStatus(item, false)}
+                            disabled={isActing || !item.published}
+                            className={`rounded-full px-4 py-1.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                              item.published
+                                ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                                : 'bg-gray-100 text-gray-500'
+                            }`}
+                          >
+                            Decline
                           </button>
                         </div>
                       </td>
@@ -167,12 +145,6 @@ export default function TestimonialsListPage() {
           )}
         </div>
       </div>
-      <DeleteConfirmModal
-        open={!!deleteId}
-        onClose={() => setDeleteId(null)}
-        onConfirm={handleDelete}
-        title="this testimonial"
-      />
     </>
   );
 }
